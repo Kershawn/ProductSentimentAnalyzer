@@ -1,7 +1,22 @@
 import streamlit as st
+import positiveproducts, negativeproducts, fileupload, home
 
-# Add a selectbox to the sidebar:
-add_selectbox = st.sidebar.selectbox(
-    'How would you like to be contacted?',
-    ('Email', 'Home phone', 'Mobile phone')
+# st.title('Home')
+# st.write('Welcome to the homepage')
+st.sidebar.title('Navigation')
+
+PAGES = {
+    "Home": home,
+    "File Upload": fileupload,
+    "Positive Products": positiveproducts,
+    "Negative Products": negativeproducts
+}
+
+# Add a radio button to the sidebar:
+selection = st.sidebar.radio(
+    'Go to ',
+    list(PAGES.keys())
 )
+
+page = PAGES[selection]
+page.app()
