@@ -1,3 +1,5 @@
+from collections import Counter
+
 import pandas as pd
 
 import findspark
@@ -7,6 +9,7 @@ from pyspark.ml.feature import HashingTF, StopWordsRemover, Tokenizer
 from pyspark.sql import SparkSession
 import pyspark.sql.functions as spark_funcs
 import streamlit as st
+import streamlit_wordcloud as wc
 
 spark = SparkSession.builder.master('local').appName('Big Data Project').getOrCreate()
 lr_model1 = LogisticRegressionModel.load('../models/model1.dat')
@@ -23,7 +26,7 @@ st.write(
 """)
 
 
-def load_data():
+def load_data(fp):
     return spark.createDataFrame(pd.read_csv(fp))
 
 
@@ -52,18 +55,21 @@ def predict_sentiment(df, model):
     data = prediction.select('Cleaned_Reviews', 'prediction', 'Product_Name')
     return data
 
+def get_word_clouds(product_summary):
+    products = product_summary.index
+    for prod in products:
+        words = product_summary['Cleaned_Reviews'][prod].split()
+        ctr = Counter(words)
+        wcdict = [{'text': w, 'value': c} for w, c in ctr.items()]
+        wc.visualize(wcdict)
+
 
 if fp is not None:
-    df = load_data()
+    df = load_data(fp)
     df = clean_data(df)
     df = tokenize_data(df)
     dff = predict_sentiment(df, lr_model1)
-    st.write(dff.toPandas())
-    dff = predict_sentiment(df, lr_model2)
-    st.write(dff.toPandas())
-    dff = predict_sentiment(df, lr_model3)
-    st.write(dff.toPandas())
-    dff = predict_sentiment(df, lr_model4)
-    st.write(dff.toPandas())
-    dff = predict_sentiment(df, lr_model5)
-    st.write(dff.toPandas())
+    dfp = dff.toPandas()
+    product_summary = dfp.groupby('Product_Name').agg({'prediction': 'mean', 'Cleaned_Reviews': lambda x: ' '.join((' '.join(i) for i in x))})
+    st.write(product_summary)
+    get_word_clouds(product_summary)
