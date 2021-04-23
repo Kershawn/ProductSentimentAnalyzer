@@ -3,6 +3,7 @@ import time
 import pandas as pd
 
 import findspark
+findspark.find()
 findspark.init()
 from pyspark.ml.classification import LogisticRegressionModel
 from pyspark.ml.feature import HashingTF, StopWordsRemover, Tokenizer
