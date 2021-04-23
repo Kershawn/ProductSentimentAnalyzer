@@ -11,19 +11,18 @@ import pyspark.sql.functions as spark_funcs
 import streamlit as st
 import streamlit_wordcloud as wc
 
-spark = SparkSession.builder.master('local').appName('Big Data Project').getOrCreate()
-lr_model1 = LogisticRegressionModel.load('../models/model1.dat')
-lr_model2 = LogisticRegressionModel.load('../models/model2.dat')
-lr_model3 = LogisticRegressionModel.load('../models/model3.dat')
-lr_model4 = LogisticRegressionModel.load('../models/model4.dat')
-lr_model5 = LogisticRegressionModel.load('../models/model5.dat')
-
+spark = SparkSession.builder.master('local[*]').appName('Big Data Project').getOrCreate()
 st.write('# Sentiment Analyzer')
 fp = st.file_uploader('Upload CSV')
 st.write(
 """_Uploaded files must contain at least the followings column which must be labeled in the first row of the file_\n
 `Review`, `Product_Name`
 """)
+lr_model1 = LogisticRegressionModel.load('../models/model1.dat')
+# lr_model2 = LogisticRegressionModel.load('../models/model2.dat')
+# lr_model3 = LogisticRegressionModel.load('../models/model3.dat')
+# lr_model4 = LogisticRegressionModel.load('../models/model4.dat')
+# lr_model5 = LogisticRegressionModel.load('../models/model5.dat')
 
 
 def load_data(fp):
@@ -61,7 +60,8 @@ def get_word_clouds(product_summary):
         words = product_summary['Cleaned_Reviews'][prod].split()
         ctr = Counter(words)
         wcdict = [{'text': w, 'value': c} for w, c in ctr.items()]
-        wc.visualize(wcdict)
+        st.subheader(f'Top words for Product: {prod}')
+        wcloud = wc.visualize(wcdict)
 
 
 if fp is not None:
@@ -69,7 +69,14 @@ if fp is not None:
     df = clean_data(df)
     df = tokenize_data(df)
     dff = predict_sentiment(df, lr_model1)
-    dfp = dff.toPandas()
+    dfp = dff.toPandas().head(100)
     product_summary = dfp.groupby('Product_Name').agg({'prediction': 'mean', 'Cleaned_Reviews': lambda x: ' '.join((' '.join(i) for i in x))})
-    st.write(product_summary)
-    get_word_clouds(product_summary)
+    product_summary['Sentiment'] = product_summary['prediction']
+    st.subheader('Top products')
+    top_products = product_summary.sort_values(by=['Sentiment'], ascending=False).head(10)
+    st.write(top_products[['Product_Name', 'Sentiment']])
+    get_word_clouds(top_products)
+    st.subheader('Bottom products')
+    bottom_products = product_summary.sort_values(by=['Sentiment']).head(10)
+    st.write(bottom_products[['Product_Name', 'Sentiment']])
+    get_word_clouds(bottom_products)
