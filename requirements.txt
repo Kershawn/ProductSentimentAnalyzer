@@ -1,3 +1,2 @@
 spark >=3.1
 streamlit >=0.80
-findspark
