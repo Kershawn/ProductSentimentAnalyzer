@@ -1,4 +1,5 @@
 import streamlit as st
+import time
 
 def app():
     st.title('Product Analysis')
@@ -9,8 +10,13 @@ def app():
     `Review`
     """)
     fp = st.file_uploader('Upload JSON')
+    
     if fp is not None:
-        st.write("File uploaded Successfully")
+        
+       with st.spinner('Processing...'):
+            st.success('File uploaded Successfully!')
+
+   
 
 
     
