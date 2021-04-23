@@ -47,8 +47,8 @@ def app(spark):
     if st.button("Start Analysis"):
         with st.spinner('Processing...'):
             # call model functions here
-            time.sleep(3)
             main(fp, lr_model, spark)
+            time.sleep(100)
             # st.header("Top Reviewed Products")
             # c1, c2, c3 = st.beta_columns((1, 1, 2))
             # c1.subheader("**Product**")

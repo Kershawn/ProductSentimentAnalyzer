@@ -1,12 +1,13 @@
 from collections import Counter
 
 import pandas as pd
+import streamlit as st
 
 # import findspark
 # findspark.init()
 # from pyspark.ml.classification import LogisticRegressionModel
 from pyspark.ml.feature import HashingTF, StopWordsRemover, Tokenizer
-# from pyspark.sql import SparkSession
+from pyspark.sql import SparkSession
 import pyspark.sql.functions as spark_funcs
 # import streamlit as st
 import streamlit_wordcloud as wc
@@ -74,9 +75,10 @@ def main(fp, model, spark):
         product_summary['Sentiment'] = product_summary['prediction']
         st.subheader('Top products')
         top_products = product_summary.sort_values(by=['Sentiment'], ascending=False).head(10)
-        st.write(top_products[['Product_Name', 'Sentiment']])
+        st.write(top_products[['Sentiment']])
         get_word_clouds(top_products)
         st.subheader('Bottom products')
         bottom_products = product_summary.sort_values(by=['Sentiment']).head(10)
-        st.write(bottom_products[['Product_Name', 'Sentiment']])
+        st.write(bottom_products[['Sentiment']])
         get_word_clouds(bottom_products)
+        time.sleep(100)
