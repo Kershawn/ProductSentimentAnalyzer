@@ -1,4 +1,10 @@
+import findspark
+findspark.init()
+from pyspark.sql import SparkSession
+spark = SparkSession.builder.master('local[*]').appName('Big Data Project').getOrCreate()
+
 import streamlit as st
+
 import pages.productanalysis as pa
 import pages.negativeproducts as np
 import pages.fileupload as fu
@@ -23,4 +29,4 @@ selection = st.sidebar.radio(
 )
 
 page = PAGES[selection]
-page.app()
+page.app(spark)
