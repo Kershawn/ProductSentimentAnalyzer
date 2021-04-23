@@ -13,7 +13,7 @@ import pyspark.sql.functions as spark_funcs
 def app():
     # st.set_page_config(layout="wide")
     st.title('Product Analysis')
-    st.write('Welcome to Positive Products')
+    st.write('Welcome to Product Analysis')
 
     st.write(
     """_Uploaded files must contain the following column which must be labeled in the first row of the file_\n
@@ -33,19 +33,19 @@ def app():
 
     selection = st.selectbox("Select a model to process data:",("CD and Vinyl", "Digital Music","Pet Supplies","Industrial and Scientific","Arts and Craft"))
     
-    spark = SparkSession.builder.master('local').appName('Big Data Project').getOrCreate()
-    if selection =="CD and Vinyl":
-        lr_model = LogisticRegressionModel.load('../models/model1.dat')
-    if selection =="Digital Music":
-        lr_model = LogisticRegressionModel.load('../models/model2.dat')
-    if selection =="Pet Supplies":
-        lr_model = LogisticRegressionModel.load('../models/model3.dat')
-    if selection =="Industrial and Scientific":
-        lr_model = LogisticRegressionModel.load('../models/model4.dat')
-    if selection =="Arts and Craft":
-        lr_model = LogisticRegressionModel.load('../models/model5.dat')
+    # spark = SparkSession.builder.master('local').appName('Big Data Project').getOrCreate()
+    # if selection =="CD and Vinyl":
+    #     lr_model = LogisticRegressionModel.load('models/model1.dat')
+    # if selection =="Digital Music":
+    #     lr_model = LogisticRegressionModel.load('models/model2.dat')
+    # if selection =="Pet Supplies":
+    #     lr_model = LogisticRegressionModel.load('models/model3.dat')
+    # if selection =="Industrial and Scientific":
+    #     lr_model = LogisticRegressionModel.load('models/model4.dat')
+    # if selection =="Arts and Craft":
+    #     lr_model = LogisticRegressionModel.load('models/model5.dat')
     
-    if st.button("Start Analysis"):
+    if st.button("Start Analysis") == False:
         with st.spinner('Processing...'):
             # call model functions here
             time.sleep(3)
