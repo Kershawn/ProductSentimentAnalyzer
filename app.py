@@ -6,6 +6,7 @@ import pages.home as home
 
 # st.title('Home')
 # st.write('Welcome to the homepage')
+st.set_page_config(layout="wide")
 st.sidebar.title('Navigation')
 
 PAGES = {
