@@ -1,6 +1,6 @@
 import streamlit as st
 
-def app():
+def app(spark):
     st.title('File Upload')
     #  st.write('Welcome to the File Upload Page')
 
