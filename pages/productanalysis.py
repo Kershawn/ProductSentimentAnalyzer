@@ -20,7 +20,7 @@ def app(spark):
     """)
     
     selection = st.selectbox("Select a model to process data:",("CD and Vinyl", "Digital Music","Pet Supplies","Industrial and Scientific","Arts and Craft"))
-    fp = st.file_uploader('Upload JSON or CSV')
+    fp = st.file_uploader('Upload CSV')
     
     if selection =="CD and Vinyl":
         lr_model = LogisticRegressionModel.load('models/model1.dat')
