@@ -1,11 +1,10 @@
-import streamlit as st
-import time
 import pandas as pd
 
 import findspark
- #findspark.find()
 findspark.init()
 from pyspark.ml.classification import LogisticRegressionModel
+
+import streamlit as st
 
 from pages.fileupload2 import main
 
@@ -35,4 +34,3 @@ def app(spark):
 
     if fp is not None:
         main(fp, lr_model, spark)
-        
