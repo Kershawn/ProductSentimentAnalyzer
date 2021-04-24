@@ -61,4 +61,7 @@ def main(fp, model, spark):
         top_products = product_summary.sort_values(by=['Sentiment'], ascending=False).head(10)
         st.write(top_products[['Sentiment']])
         get_word_clouds(top_products)
-        # time.sleep(100)
+        st.subheader('Bottom products')
+        bottom_products = product_summary.sort_values(by=['Sentiment']).head(10)
+        st.write(bottom_products[['Sentiment']])
+        get_word_clouds(bottom_products)
