@@ -25,13 +25,13 @@ def app(spark):
     if selection =="CD and Vinyl":
         lr_model = LogisticRegressionModel.load('models/model1.dat')
     if selection =="Digital Music":
-        lr_model = LogisticRegressionModel.load('models/model1.dat')
+        lr_model = LogisticRegressionModel.load('models/model2.dat')
     if selection =="Pet Supplies":
-        lr_model = LogisticRegressionModel.load('models/model1.dat')
+        lr_model = LogisticRegressionModel.load('models/model3.dat')
     if selection =="Industrial and Scientific":
-        lr_model = LogisticRegressionModel.load('models/model1.dat')
+        lr_model = LogisticRegressionModel.load('models/model4.dat')
     if selection =="Arts and Craft":
-        lr_model = LogisticRegressionModel.load('models/model1.dat')
+        lr_model = LogisticRegressionModel.load('models/model5.dat')
 
     if fp is not None:
         main(fp, lr_model, spark)
