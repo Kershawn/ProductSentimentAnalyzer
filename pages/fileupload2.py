@@ -1,29 +1,13 @@
 from collections import Counter
 
 import pandas as pd
-import streamlit as st
 
-# import findspark
-# findspark.init()
-# from pyspark.ml.classification import LogisticRegressionModel
 from pyspark.ml.feature import HashingTF, StopWordsRemover, Tokenizer
 from pyspark.sql import SparkSession
 import pyspark.sql.functions as spark_funcs
-# import streamlit as st
-import streamlit_wordcloud as wc
 
-# spark = SparkSession.builder.master('local[*]').appName('Big Data Project').getOrCreate()
-# st.write('# Sentiment Analyzer')
-# fp = st.file_uploader('Upload CSV')
-# st.write(
-# """_Uploaded files must contain at least the followings column which must be labeled in the first row of the file_\n
-# `Review`, `Product_Name`
-# """)
-# lr_model1 = LogisticRegressionModel.load('../models/model1.dat')
-# lr_model2 = LogisticRegressionModel.load('../models/model2.dat')
-# lr_model3 = LogisticRegressionModel.load('../models/model3.dat')
-# lr_model4 = LogisticRegressionModel.load('../models/model4.dat')
-# lr_model5 = LogisticRegressionModel.load('../models/model5.dat')
+import streamlit as st
+import streamlit_wordcloud as wc
 
 
 def load_data(spark, fp):
@@ -77,4 +61,7 @@ def main(fp, model, spark):
         top_products = product_summary.sort_values(by=['Sentiment'], ascending=False).head(10)
         st.write(top_products[['Sentiment']])
         get_word_clouds(top_products)
-        # time.sleep(100)
+        st.subheader('Bottom products')
+        bottom_products = product_summary.sort_values(by=['Sentiment']).head(10)
+        st.write(bottom_products[['Sentiment']])
+        get_word_clouds(bottom_products)
